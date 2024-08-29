@@ -1,30 +1,3 @@
-// Skip to content
-// Product
-// Solutions
-// Open Source
-// Pricing
-// Search
-// Sign in
-// Sign up
-// akaldhafer
-// /
-// The-Library-Management-System-
-// Public
-// Code
-// Issues
-// Pull requests
-// Actions
-// Projects
-// Security
-// Insights
-// The-Library-Management-System-/source.cpp
-// @akaldhafer
-// akaldhafer Update source.cpp
-// Latest commit 175714f on Apr 13, 2021
-//  History
-//  1 contributor
-// 834 lines (811 sloc)  28.4 KB
-
 #include <bits/stdc++.h> //This header file contanins all the basic libraries of oops
 using namespace std;
 
@@ -38,7 +11,6 @@ class allsingle;
 class memberRecord;
 class BookRecord;
 class hellyeah;
-	
 
 // Drclare the Head of the linked list
 
@@ -450,40 +422,40 @@ void SearchPRecord(memberRecord* Head) {
 }
 /*display last 10 borrowed book*/
 void PLastBorrowedB(memberRecord* Head) {
-	memberRecord* MyCurrent1 = Head;
-	string name;
-	cout << "\nEnter member Name or ID: "; cin >> name;
-	if (MyCurrent1 == NULL) {
-		cout << "NO recode yet!!, please insert new recodes first..." << endl;
-	}
-	while (MyCurrent1 != NULL) {
-		if (name == MyCurrent1->PName || name == MyCurrent1->PID) {
-			cout << " member ID              : " << MyCurrent1->PID << endl;
-			cout << " member Name            : " << MyCurrent1->PName << endl;
-			cout << " member Phone NO        : " << MyCurrent1->Phone << endl;
-			cout << " Number of borrowed book: " << MyCurrent1->BorrowNo << endl;
-			cout << " The borrowed books: \n" << endl;
-			for (int i = 0; i < MyCurrent1->ReturnNo; i++)
-			{
-				if (i ==10)/*to display only the last 10 borrowed books*/
-				{
-					break;
-				}
-				cout << " Book ID                : " << MyCurrent1->ReturningBook[i][0] << endl;
-				cout << " Book title             : " << MyCurrent1->ReturningBook[i][1] << endl;
-				cout << " Book category          : " << MyCurrent1->ReturningBook[i][2] << endl;
-				cout << " Book Genre             : " << MyCurrent1->ReturningBook[i][3] << endl;
-				cout << " Borrow Date            : " << MyCurrent1->ReturningBook[i][4] << endl;
-				cout << "|------------------------------------------------|" << endl;
-			}
-			break;
-		}
-		else
-		{
-			MyCurrent1 = MyCurrent1->Next;// go to next
-		}
-	}
+    memberRecord* MyCurrent1 = Head;
+    string name;
+    cout << "\nEnter member Name or ID: "; 
+    cin >> name;
+
+    if (MyCurrent1 == NULL) {
+        cout << "NO record yet!!, please insert new records first..." << endl;
+        return;
+    }
+
+    while (MyCurrent1 != NULL) {
+        if (name == MyCurrent1->PName || name == MyCurrent1->PID) {
+            cout << " member ID              : " << MyCurrent1->PID << endl;
+            cout << " member Name            : " << MyCurrent1->PName << endl;
+            cout << " member Phone NO        : " << MyCurrent1->Phone << endl;
+            cout << " Number of borrowed book: " << MyCurrent1->BorrowNo << endl;
+            cout << " The borrowed books: \n" << endl;
+
+            int start = max(0, MyCurrent1->ReturnNo - 10); // Start index for displaying last 10 books
+            for (int i = start; i < MyCurrent1->ReturnNo; i++) {
+                cout << " Book ID                : " << MyCurrent1->ReturningBook[i][0] << endl;
+                cout << " Book title             : " << MyCurrent1->ReturningBook[i][1] << endl;
+                cout << " Book category          : " << MyCurrent1->ReturningBook[i][2] << endl;
+                cout << " Book Genre             : " << MyCurrent1->ReturningBook[i][3] << endl;
+                cout << " Borrow Date            : " << MyCurrent1->ReturningBook[i][4] << endl;
+                cout << "|------------------------------------------------|" << endl;
+            }
+            return;
+        }
+        MyCurrent1 = MyCurrent1->Next;
+    }
+    cout << "Member not found." << endl;
 }
+
 /*update the book record*/
 BookRecord* UpdateBook(string biD, BookRecord* Head) {
 	BookRecord* MyCurrent1 = Head;
