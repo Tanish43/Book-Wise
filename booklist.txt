@@ -4,6 +4,62 @@
  book category =Fiction
  book position =0
 
+ book Id = 2
+ book name = To Kill a Mockingbird
+ book category = Classic
+ book position = 1
+
+ book Id = 3
+ book name = 1984
+ book category = Dystopian
+ book position = 2
+ 
+ book Id = 4
+ book name = The Great Gatsby
+ book category = Classic
+ book position = 3
+ 
+ book Id = 5
+ book name = The Catcher in the Rye
+ book category = Fiction
+ book position = 4
+ 
+ book Id = 6
+ book name = Moby Dick
+ book category = Adventure
+ book position = 5
+ 
+ book Id = 7
+ book name = Pride and Prejudice
+ book category = Romance
+ book position = 6
+ 
+ book Id = 8
+ book name = The Hobbit
+ book category = Fantasy
+ book position = 7
+ 
+ book Id = 9
+ book name = War and Peace
+ book category = Historical Fiction
+ book position = 8
+ 
+ book Id = 10
+ book name = The Alchemist
+ book category = Philosophy
+ book position = 9
+ 
+ book Id = 11
+ book name = The Da Vinci Code
+ book category = Thriller
+ book position = 10
+ 
+ book Id = 12
+ book name = The Hunger Games
+ book category = Science Fiction
+ book position = 11
+
+
 
 
 
