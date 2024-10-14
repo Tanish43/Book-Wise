@@ -1,4 +1,10 @@
 #include <bits/stdc++.h> //This header file contanins all the basic libraries of oops
+#ifdef _WIN32
+#include <conio.h> // for Windows
+#else
+#include <termios.h>
+#include <unistd.h>
+#endif
 using namespace std;
 
 /*The Library Management System 
@@ -586,20 +592,79 @@ class hellyeah:public memberRecord , public BookRecord
 	{
 
 	}
-	void Login() {
-	string pin;
-	cout << "\n       <=======>  Library Management System(LMS) <=======>\n";
-	cout << "\nEnter Password PIN To Access: "; cin >> pin;
-	if (pin == "1234") {
-		cout << "\n  <>  Correct PIN <> \n";
-		system("pause");
-		system("cls");
-	}
-	else {
-		cout << "\n  <> Wrong PIN <>\n";
-		Login();
-	}
-}
+	
+	
+	string getPasswordInput() {
+        string password = "";
+        char ch;
+    
+        cout << "Enter Password: ";
+    
+        #ifdef _WIN32
+        while ((ch = getch()) != '\r') { // Windows
+            if (ch == 8 && password.length() > 0) { // Backspace key
+                cout << "\b \b";
+                password.pop_back();
+            } else if (ch != 8) {
+                password.push_back(ch);
+                cout << "*";
+            }
+        }
+        #else
+        struct termios oldt, newt;
+        tcgetattr(STDIN_FILENO, &oldt); // get current terminal attributes
+        newt = oldt;
+        newt.c_lflag &= ~ECHO; // disable echoing
+        tcsetattr(STDIN_FILENO, TCSANOW, &newt); // apply changes
+        while ((ch = getchar()) != '\n') { // Linux/Unix
+            if (ch == 127 && password.length() > 0) { // Backspace key
+                cout << "\b \b";
+                password.pop_back();
+            } else if (ch != 127) {
+                password.push_back(ch);
+                cout << "*";
+            }
+        }
+        tcsetattr(STDIN_FILENO, TCSANOW, &oldt); // restore terminal attributes
+        #endif
+    
+        cout << endl;
+        return password;
+    }
+    
+    void login() {
+        string password;
+        cout << "\n       <=======>  Library Management System(LMS) <=======>\n";
+    	cout << "\nEnter Password PIN To Access: ";
+    	
+        password = getPasswordInput();
+        
+        if (password == "1234") {
+            cout << "\n  <>  Correct PIN <> \n";
+    		system("pause");
+    		system("cls");
+        } else {
+            cout << "\n  <> Wrong PIN <>\n";
+    		login();
+        }
+    }
+    
+// 	void Login() {
+// 	string pin;
+//     pin = getPasswordInput();
+    
+// 	cout << "\n       <=======>  Library Management System(LMS) <=======>\n";
+// 	cout << "\nEnter Password PIN To Access: "; cin >> pin;
+// 	if (pin == "1234") {
+// 		cout << "\n  <>  Correct PIN <> \n";
+// 		system("pause");
+// 		system("cls");
+// 	}
+// 	else {
+// 		cout << "\n  <> Wrong PIN <>\n";
+// 		Login();
+// 	}
+// }
 };
 /*insert new record arbitrary for member */
 void InsertArbitraryp(string memberid, string pname, string phone, int index)
@@ -766,14 +831,6 @@ void InsertArbitraryb(string bid, string Btitle, string bcategory, string bgerne
 }
 
 
-
-
-
-
-
-
-
-
 /*login page*/
 
 
@@ -782,7 +839,7 @@ int main() {
 	hellyeah obj;
 	string sbtitle;
 	string bookid, borrowid;
-	obj.Login();
+	obj.login();
 	system("color 2");/*changing the color to green*/
 
 	do{
