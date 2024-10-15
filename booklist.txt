@@ -58,8 +58,3 @@
  book name = The Hunger Games
  book category = Science Fiction
  book position = 11
-
-
-
-
-
