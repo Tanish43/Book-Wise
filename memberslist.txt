@@ -1,0 +1,15 @@
+member Id =2
+member name =Jane Smith
+member phone =9876543210
+member borrowed books =0
+
+member Id =1
+member name =Tanish Sharma
+member phone =85448011354
+member borrowed books =0
+
+member Id =3
+member name =Mohit
+member phone =9984214124
+member borrowed books =0
+

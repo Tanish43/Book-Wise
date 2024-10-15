@@ -106,23 +106,42 @@ friend bool SearchP(string pid, memberRecord* Head);
 // 	return false;
 // }
 	/*add member account*/
-void Addmember()
-{
-	cout << "\nPlease fill up the following requirements: \n" << endl;
-	cout << "Enter member ID: "; cin >> PIDInput;
-	if (SearchP(PIDInput, Head) == true) {
-		cout << "\n This ID has been used before !!\n" << endl;
-	}
-	else
-	{
-		getchar();
-		cout << "Enter member Name: "; getline(cin, PNameInput, '\n');
-		cout << "Enter Phone No: "; getline(cin, PhoneInput, '\n');
-		cout << "Enter the position you want to save the recode: "; cin >> position;
-		InsertArbitraryp(PIDInput, PNameInput, PhoneInput, position);
-		place++;
-	}
-	
+
+void SaveMembersToFile() {
+        ofstream fout("memberslist.txt"); // Open in default mode (truncate existing content)
+        memberRecord* MyCurrent = Head;
+
+        while (MyCurrent != NULL) {
+            fout << "member Id =" << MyCurrent->PID << endl;
+            fout << "member name =" << MyCurrent->PName << endl;
+            fout << "member phone =" << MyCurrent->Phone << endl;
+            fout << "member borrowed books =" << MyCurrent->BorrowNo << endl << endl; // Leave a blank line
+            MyCurrent = MyCurrent->Next; // Move to the next member
+        }
+        
+        fout.close();
+    }
+
+
+void Addmember() {
+    cout << "\nPlease fill up the following requirements: \n" << endl;
+    cout << "Enter member ID: "; cin >> PIDInput;
+
+    if (SearchP(PIDInput, Head) == true) {
+        cout << "\n This ID has been used before !!\n" << endl;
+    } else {
+        getchar();
+        cout << "Enter member Name: "; getline(cin, PNameInput, '\n');
+        cout << "Enter Phone No: "; getline(cin, PhoneInput, '\n');
+        cout << "Enter the position you want to save the record: "; cin >> position;
+
+        // Add member to the linked list
+        InsertArbitraryp(PIDInput, PNameInput, PhoneInput, position);
+        place++;
+
+        // Save the current members to the file
+        SaveMembersToFile();
+    }
 }
 
 
@@ -203,12 +222,15 @@ void AddBook(){
 		cout << "Enter the position you want to save the recode: "; cin >> position;
 
         ofstream fout;
-        fout.open("booklist.txt",ios::app);
-        fout<<"\n book Id ="<<bIDInput;
-        fout<<"\n book name ="<<btitleInput;
-        fout<<"\n book category ="<<categoryInput;
-        fout<<"\n book position ="<<position;
-        fout<<"\n\n\n\n\n";
+        fout.open("booklist.txt", ios::app);
+        
+        // Write the book details and add a blank line after each record
+		fout << endl;
+        fout << "\n book Id =" << bIDInput << endl;
+        fout << " book name =" << btitleInput << endl;
+        fout << " book category =" << categoryInput << endl;
+        fout << " book position =" << position << endl; // Leave a blank line after the book details
+        
         fout.close();
         
 
@@ -532,26 +554,31 @@ BookRecord* UpdateBook(string biD, BookRecord* Head) {
 	return NULL;
 }
 /*update member info*/
-void UpdatePInfo()
-{
-	memberRecord* MyCurrent = Head;
-	cout << "Enter member ID: "; cin >> PIDInput;/*getting the member record*/
-	while (MyCurrent != NULL) {
-		if (MyCurrent->PID == PIDInput) {/*find the member record*/
-			cout << "\nPlease fill up The new info: \n" << endl;
-			getchar();
-			cout << "Enter member Name: "; getline(cin, PNameInput, '\n');
-			cout << "Enter Phone No   : "; getline(cin, PhoneInput, '\n');
-			MyCurrent->PName = PNameInput;/*assigning the new data*/
-			MyCurrent->Phone = PhoneInput;
-			break;
-		}
-		else {
-			MyCurrent = MyCurrent->Next; //go to next record
-		}
-	}
-	return;
+void UpdatePInfo() {
+    memberRecord* MyCurrent = Head;
+    cout << "Enter member ID: "; 
+    cin >> PIDInput; // getting the member record
+
+    while (MyCurrent != NULL) {
+        if (MyCurrent->PID == PIDInput) { // find the member record
+            cout << "\nPlease fill up The new info: \n" << endl;
+            getchar();
+            cout << "Enter member Name: "; getline(cin, PNameInput, '\n');
+            cout << "Enter Phone No   : "; getline(cin, PhoneInput, '\n');
+            MyCurrent->PName = PNameInput; // assigning the new data
+            MyCurrent->Phone = PhoneInput;
+            break;
+        }
+        MyCurrent = MyCurrent->Next; // go to next record
+    }
+
+    // Save the updated member list to the file
+    if (Head != NULL) {
+        Head->SaveMembersToFile();  // Call SaveMembersToFile from Head or any instance of memberRecord
+    }
 }
+
+
 /*display members records with the active borrowed books*/
 void Displaymembers(memberRecord* Head) {
 	memberRecord* MyCurrent1 = Head;
@@ -753,81 +780,149 @@ bool SearchP(string pid, memberRecord* Head)
 }
 
 /*insert arbitrary book*/
-void InsertArbitraryb(string bid, string Btitle, string bcategory, string bgerne, bool avaiable, int index)
-{
-	BookRecord* New_node = new BookRecord; // create new node
-	New_node->bID = bid;
-	New_node->btitle = Btitle;
-	New_node->category = bcategory;
-	New_node->genre = bgerne;
-	New_node->availability = avaiable;
-	if (index <= place2) { /*if the given position less than the linked list size*/
-		/*when the linked list still empty- insert at the begnning*/
-		if (index == 0) { //insert at the beginning
-			BookRecord* Position = new BookRecord;
-			Position->bID = bid;
-			Position->btitle = Btitle;
-			Position->category = bcategory;
-			Position->genre = bgerne;
-			Position->availability = avaiable;
-			Position->Next2 = Head2;
-			Head2 = Position;
-		} 
-		/*if the given position is equal the linked list size: insert at the end*/
-		else if (index == place2)
-		{ //insert at the end of the linked list
-			BookRecord* Position2 = new BookRecord; //create new node
-			Position2->bID = bid;
-			Position2->btitle = Btitle;
-			Position2->category = bcategory;
-			Position2->genre = bgerne;
-			Position2->availability = avaiable;
-			Position2->Next2 = NULL;   // assign the next of the position to NULL
-			if (Head2 == NULL)
-				Head2 = Position2; // insert at the beginning of the linked list
-			else { //insert at the end of the linked list
-				BookRecord* MyCurrent1 = Head2;//create new node that equal the head 
-				while (MyCurrent1->Next2 != NULL) {//while will work until it reaches the NULL(end of linked list)
-					MyCurrent1 = MyCurrent1->Next2; // move from position to the next one until reach the end of the linked list
-				}
-				MyCurrent1->Next2 = Position2; // my last position->next in the linked list ->
-			}                                 //-> will be equal the position that the new recode will be saved at
-		}
-		/*insert at the given position*/
-		else { //insert at the given position
-			BookRecord* new_record = new BookRecord; // create new node
-			new_record->bID = bid;
-			new_record->btitle = Btitle;
-			new_record->category = bcategory;
-			new_record->genre = bgerne;
-			new_record->availability = avaiable;
-			BookRecord* prev = Head2; //create new node and assgin it to the head of the linked list
-			for (int i = 0; i < index - 1; i++)
-				prev = prev->Next2;
-			new_record->Next2 = prev->Next2;
-			prev->Next2 = new_record;
-		}
-	}
-	/*when the linked list size is bigger than the given position*/
-	else if (index > place2){ 
-		BookRecord* Position2 = new BookRecord; // create new recode
-		Position2->bID = bid;
-		Position2->btitle = Btitle;
-		Position2->category = bcategory;
-		Position2->genre = bgerne;
-		Position2->availability = avaiable;
-		Position2->Next2 = NULL;
-		if (Head2 == NULL) {
-			Head2 = Position2; // insert at the beginning of the linked list
-		}
-		else {
-			BookRecord* MyCurrent1 = Head2; //insert at the end of the linked list
-			while (MyCurrent1->Next2 != NULL) {//while will work until it reaches the NULL(end of linked list)
-				MyCurrent1 = MyCurrent1->Next2;
-			}
-			MyCurrent1->Next2 = Position2;
-		}
-	}
+void InsertArbitraryb(string bid, string Btitle, string bcategory, string bgerne, bool avaiable, int index) {
+    BookRecord* New_node = new BookRecord; // create new node
+    New_node->bID = bid;
+    New_node->btitle = Btitle;
+    New_node->category = bcategory;
+    New_node->genre = bgerne;
+    New_node->availability = avaiable;
+
+    if (index <= place2) {
+        if (index == 0) { // Insert at the beginning
+            New_node->Next2 = Head2;
+            Head2 = New_node;
+        } else { // Insert at the given position
+            BookRecord* temp = Head2;
+            for (int i = 0; i < index - 1 && temp->Next2 != NULL; i++) {
+                temp = temp->Next2;
+            }
+            New_node->Next2 = temp->Next2;
+            temp->Next2 = New_node;
+        }
+    } else { // Insert at the end if index exceeds size
+        if (Head2 == NULL) {
+            Head2 = New_node;
+        } else {
+            BookRecord* temp = Head2;
+            while (temp->Next2 != NULL) {
+                temp = temp->Next2;
+            }
+            temp->Next2 = New_node;
+        }
+    }
+    place2++; // Update place2 to reflect added node
+}
+
+string trim(const string& str) {
+    size_t first = str.find_first_not_of(' ');
+    if (first == string::npos) return "";
+    size_t last = str.find_last_not_of(' ');
+    return str.substr(first, (last - first + 1));
+}
+
+
+void LoadBooksFromFile() {
+    ifstream fin("booklist.txt");
+
+    // Check if the file was opened successfully
+    if (!fin.is_open()) {
+        //cout << "Error: Could not open booklist.txt file" << endl;
+        return;
+    }
+
+    string line, bid, title, category;
+    bool availability;
+    int position;
+
+    //cout << "Loading books from file..." << endl;
+
+    while (getline(fin, line)) {
+        // Skip empty lines
+        if (line.empty()) {
+            continue;
+        }
+
+        // Debugging: Print the current line being processed
+        //cout << "Processing line: " << line << endl;
+
+        // Parse the book ID
+        if (line.find("book Id =") != string::npos) {
+            bid = trim(line.substr(line.find("=") + 1)); // Extract and trim book ID
+            //cout << "Found book ID: " << bid << endl;
+
+            // Read and parse the next line for the book name
+            getline(fin, line);
+            title = trim(line.substr(line.find("=") + 1)); // Extract and trim book name
+            //cout << "Found book name: " << title << endl;
+
+            // Read and parse the next line for the book category
+            getline(fin, line);
+            category = trim(line.substr(line.find("=") + 1)); // Extract and trim book category
+            //cout << "Found book category: " << category << endl;
+
+            // Read and parse the next line for the book position
+            getline(fin, line);
+            string pos_str = trim(line.substr(line.find("=") + 1)); // Extract and trim book position
+            position = stoi(pos_str); // Convert position to integer
+            //cout << "Found book position: " << position << endl;
+
+            // All books are available by default
+            availability = true;
+
+            // Insert the book into the linked list
+            InsertArbitraryb(bid, title, category, "", availability, position);
+        }
+    }
+
+    fin.close();
+    cout << "Finished loading books." << endl;
+}
+
+void LoadMembersFromFile() {
+    ifstream fin("memberslist.txt");
+    
+    // Check if the file was opened successfully
+    if (!fin.is_open()) {
+        cout << "Error: Could not open memberslist.txt file" << endl;
+        return;
+    }
+
+    string line, memberID, memberName, memberPhone;
+    int borrowedBooks;
+
+    cout << "Loading members from file..." << endl;
+
+    while (getline(fin, line)) {
+        // Skip empty lines
+        if (line.empty()) {
+            continue;
+        }
+
+        // Parse the member ID
+        if (line.find("member Id =") != string::npos) {
+            memberID = trim(line.substr(line.find("=") + 1)); // Extract and trim member ID
+
+            // Read and parse the next line for the member name
+            getline(fin, line);
+            memberName = trim(line.substr(line.find("=") + 1)); // Extract and trim member name
+
+            // Read and parse the next line for the member phone
+            getline(fin, line);
+            memberPhone = trim(line.substr(line.find("=") + 1)); // Extract and trim member phone
+
+            // Read and parse the next line for borrowed books count
+            getline(fin, line);
+            borrowedBooks = stoi(trim(line.substr(line.find("=") + 1))); // Extract and trim borrowed books count
+
+            // Insert the member into the linked list
+            InsertArbitraryp(memberID, memberName, memberPhone, 0); // 0 for position, can be adjusted if needed
+            // Set the borrowed book count here if needed, depending on your implementation
+        }
+    }
+
+    fin.close();
+    cout << "Finished loading members." << endl;
 }
 
 
@@ -841,6 +936,9 @@ int main() {
 	string bookid, borrowid;
 	obj.login();
 	system("color 2");/*changing the color to green*/
+	
+	LoadBooksFromFile();
+	LoadMembersFromFile();
 
 	do{
 		cerr << "\n\n       <=======>  Library Management System <=======>\n"
