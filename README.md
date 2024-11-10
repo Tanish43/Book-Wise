@@ -2,7 +2,7 @@
 
 ## Overview
 
-**Book-Wise** is a console-based Library Management System written in C++. It is designed to manage book records and member information in a library. The system provides functionalities to update book and member information, display records, borrow and return books, and ensure secure access through a password-protected login. Additionally, it now supports loading and saving book and member data from text files.
+**Book-Wise** is a console-based Library Management System with user friendly interface written in C++ and based on the concept of OOP's. It is designed to manage book records and member information in a library. The system provides functionalities to update book and member information, display records, borrow and return books, and ensure secure access through a password-protected login. Additionally, it now supports loading and saving book and member data from text files.
 
 ## Table of Contents
 
