@@ -58,3 +58,8 @@
  book name = The Hunger Games
  book category = Science Fiction
  book position = 11
+
+ book Id =14
+ book name =Boy in stripped pajamas
+ book category =Fiction
+ book position =4

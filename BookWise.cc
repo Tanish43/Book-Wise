@@ -661,7 +661,7 @@ class hellyeah:public memberRecord , public BookRecord
     
     void login() {
         string password;
-        cout << "\n       <=======>  Library Management System(LMS) <=======>\n";
+        cout << "\n       <=======>  Book-Wise (Library Management System) <=======>\n";
     	cout << "\nEnter Password PIN To Access: ";
     	
         password = getPasswordInput();
@@ -941,7 +941,7 @@ int main() {
 	LoadMembersFromFile();
 
 	do{
-		cerr << "\n\n       <=======>  Library Management System <=======>\n"
+		cerr << "\n\n       <=======>  Book-Wise (Library Management System) <=======>\n"
 			"  1. Book Services       2. members Services     3. Exit"<<endl;
 		cout << "Enter one choice: "; cin >> choice;
 		switch (choice){
